@@ -14,3 +14,9 @@ logging:
       max-history: 10
   level:
     root: [warn, error, fatal]
+
+jwt:
+  expTime: 3600000 # 1h
+
+dummyProduct:
+  url: https://dummyjson.com/products/search?q=phone
