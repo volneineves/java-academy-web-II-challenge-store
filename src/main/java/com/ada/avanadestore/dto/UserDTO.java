@@ -2,14 +2,17 @@ package com.ada.avanadestore.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
 import static com.ada.avanadestore.constants.ErrorMessages.*;
-import static com.ada.avanadestore.constants.RegexPatterns.CPF_FORMAT;
 
 
 public record UserDTO(UUID id,
@@ -20,7 +23,7 @@ public record UserDTO(UUID id,
 
                       @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @NotNull(message = PASSWORD_CANNOT_BE_NULL) @Size(min = 8, message = PASSWORD_MIN_LENGTH_8) String password,
 
-                      @NotNull(message = CPF_CANNOT_BE_NULL) @Pattern(regexp = CPF_FORMAT, message = INVALID_CPF_FORMAT) String cpf,
+                      @NotNull(message = CPF_CANNOT_BE_NULL) @CPF(message = INVALID_CPF_FORMAT) String cpf,
 
                       @NotNull(message = BIRTHDATE_CANNOT_BE_NULL) LocalDate birthdate,
 
