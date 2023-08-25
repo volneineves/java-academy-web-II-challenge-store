@@ -4,3 +4,13 @@ server:
 spring:
   profiles:
     active: ${SPRING_ACTIVE_PROFILE:test}
+
+logging:
+  file:
+    name: logs/avanadeStore.log
+  logback:
+    rolling policy:
+      max-file-size: 10MB
+      max-history: 10
+  level:
+    root: [warn, error, fatal]
