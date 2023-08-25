@@ -1,5 +1,6 @@
 package com.ada.avanadestore.entitity;
 
+import com.ada.avanadestore.dto.AddressDTO;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -28,13 +29,18 @@ public class Address {
     @Column(nullable = false, length = 9)
     private String zip;
 
-    @OneToOne
-    @JoinColumn(name = "fk_user_id", nullable = false)
-    private User user;
-
     private String complement;
 
     public Address() {
+    }
+
+    public Address(AddressDTO dto) {
+        this.street = dto.street();
+        this.number = dto.number();
+        this.city = dto.city();
+        this.state = dto.state();
+        this.zip = dto.zip();
+        this.complement = dto.complement();
     }
 
     public UUID getId() {
@@ -89,11 +95,7 @@ public class Address {
         this.complement = complement;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public AddressDTO toDTO() {
+        return new AddressDTO(id, street, number, city, state, zip, complement);
     }
 }

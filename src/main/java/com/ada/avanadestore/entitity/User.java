@@ -1,5 +1,6 @@
 package com.ada.avanadestore.entitity;
 
+import com.ada.avanadestore.dto.UserDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -39,11 +40,20 @@ public class User {
     @UpdateTimestamp
     private Date updatedAt = new Date();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
     public User() {
 
+    }
+
+    public User(UserDTO dto) {
+        this.name = dto.name();
+        this.email = dto.email();
+        this.password = dto.password();
+        this.cpf = dto.cpf();
+        this.birthdate = dto.birthdate();
+        this.address = new Address(dto.address());
     }
 
     public UUID getId() {
@@ -105,5 +115,9 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public UserDTO toDTO() {
+        return new UserDTO(id, name, email, "********", cpf, birthdate, address.toDTO(), createdAt, updatedAt);
     }
 }
