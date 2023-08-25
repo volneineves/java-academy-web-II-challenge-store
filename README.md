@@ -17,7 +17,8 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
    - [Spring Data JPA](https://spring.io/projects/spring-data-jpa): Para persistência de dados e manipulação do banco de dados.
    - [Spring Boot Starter Security](https://spring.io/guides/gs/securing-web/): Para funcionalidades relacionadas à segurança, como autenticação e autorização.
    - [Spring Boot Starter Validation](https://spring.io/guides/gs/validating-form-input/): Para validação de dados em formulários e outras entradas.
-   - [Spring Boot Starter Web](https://spring.io/guides/gs/spring-boot/): Para desenvolvimento de aplicações web e RESTful.
+   - [Spring Boot Starter Web](https://spring.io/guides/gs/spring-boot/): Para desenvolvimento de aplicações web e RESTful.   
+   - [Spring Cloud Starter OpenFeign](https://spring.io/projects/spring-cloud-openfeign): Para realização de chamadas HTTP de forma simplificada. 
 
 - [H2 Database](https://www.h2database.com/html/main.html): Banco de dados em memória para ambiente de desenvolvimento.
 - [PostgreSQL](https://www.postgresql.org/): Banco de dados usado em produção.
@@ -27,8 +28,8 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - [x] Cadastro de usuários
     - [x] Validação de nome, CPF, e-mail e endereço
-- [ ] Integração com API externa para produtos: [DummyJSON API](https://dummyjson.com/products/search?q=phone)
-    - [ ] Recuperação e armazenamento de produtos
+- [x] Integração com API externa para produtos: [DummyJSON API](https://dummyjson.com/products/search?q=phone)
+    - [x] Recuperação e armazenamento de produtos
 - [ ] Listagem de produtos disponíveis
 - [ ] Finalização de pedidos de compra
 - [ ] Autenticação via JWT
