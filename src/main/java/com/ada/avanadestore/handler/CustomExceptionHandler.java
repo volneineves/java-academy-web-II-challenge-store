@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,6 +31,13 @@ public class CustomExceptionHandler {
         }
 
         StandardErrorDTO error = new StandardErrorDTO(HttpStatus.BAD_REQUEST.value(), String.join("; ", errorMessages), request.getRequestURI(), request.getMethod(), new Date().toString());
+        return ResponseEntity.status(error.status()).body(error);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StandardErrorDTO> handleBadCredentialException(BadCredentialsException exception, HttpServletRequest request) {
+        LOGGER.error("BadCredentialsException: {}", exception.getMessage(), exception);
+        StandardErrorDTO error = new StandardErrorDTO(HttpStatus.FORBIDDEN.value(), exception.getMessage(), request.getRequestURI(), request.getMethod(), new Date().toString());
         return ResponseEntity.status(error.status()).body(error);
     }
 }

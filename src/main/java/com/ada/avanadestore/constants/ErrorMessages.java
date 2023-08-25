@@ -22,5 +22,6 @@ public class ErrorMessages {
     public static final String STATE_SIZE_EXCEEDED = "Field state should not exceed 60 characters";
     public static final String ZIP_SIZE_EXCEEDED = "Field zip should not exceed 9 characters";
     public static final String ZIP_INVALID_FORMAT = "Invalid zip format. Correct format is 00000-000";
+    public static final String USER_NOT_FOUND = "User could not be found";
 
 }
