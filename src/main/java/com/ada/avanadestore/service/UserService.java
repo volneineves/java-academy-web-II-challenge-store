@@ -2,7 +2,7 @@ package com.ada.avanadestore.service;
 
 import com.ada.avanadestore.dto.UserDTO;
 import com.ada.avanadestore.entitity.User;
-import com.ada.avanadestore.exception.ResourceNotFound;
+import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public User getById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFound(USER_NOT_FOUND));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
     }
 
     public UserDTO create(UserDTO dto) {

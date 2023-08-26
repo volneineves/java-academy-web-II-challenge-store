@@ -3,7 +3,7 @@ package com.ada.avanadestore.service;
 import com.ada.avanadestore.dto.ProductDTO;
 import com.ada.avanadestore.dto.ProductFilterDTO;
 import com.ada.avanadestore.entitity.Product;
-import com.ada.avanadestore.exception.ResourceNotFound;
+import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.ProductFilterRepository;
 import com.ada.avanadestore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class ProductService {
     }
 
     public Product getById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFound(PRODUCT_NOT_FOUND));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(PRODUCT_NOT_FOUND));
     }
 
     public List<ProductDTO> findByFilter(ProductFilterDTO dto) {

@@ -1,6 +1,13 @@
 package com.ada.avanadestore.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
-public record CreateOrderItemDTO(Integer quantity, UUID product) {
+import static com.ada.avanadestore.constants.ErrorMessages.*;
+
+public record CreateOrderItemDTO(
+        @NotNull(message = QUANTITY_NOT_NULL) @Min(value = 1, message = QUANTITY_MIN_VALUE) Integer quantity,
+        @NotNull(message = PRODUCT_NOT_NULL) UUID product) {
 }

@@ -3,6 +3,7 @@ package com.ada.avanadestore.controller;
 import com.ada.avanadestore.dto.CreateOrderDTO;
 import com.ada.avanadestore.service.OrderDTO;
 import com.ada.avanadestore.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> create(@RequestBody CreateOrderDTO dto) {
+    public ResponseEntity<OrderDTO> create(@RequestBody @Valid CreateOrderDTO dto) {
         OrderDTO createdOrder = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }

@@ -26,5 +26,11 @@ public class ErrorMessages {
     public static final String AUTHENTICATION_INVALID = "Authentication failed. JWT could be invalid or untrustworthy";
     public static final String INVALID_CREDENTIALS = "Invalid credentials: Username or password";
     public static final String PRODUCT_NOT_FOUND = "Product could not be found";
+    public static final String USER_NOT_NULL = "Field cannot be null: user";
+    public static final String ORDER_ITEMS_NOT_NULL = "Field cannot be null: orderItems";
+    public static final String ORDER_ITEMS_NOT_EMPTY = "Field cannot be empty: orderItems";
+    public static final String PRODUCT_NOT_NULL = "Field cannot be null: product";
+    public static final String QUANTITY_NOT_NULL = "Field cannot be empty: quantity";
+    public static final String QUANTITY_MIN_VALUE = "Field cannot be low than 1: quantity";
 
 }
