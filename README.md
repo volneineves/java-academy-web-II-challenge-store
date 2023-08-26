@@ -32,7 +32,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
     - [x] Recuperação e armazenamento de produtos
 - [ ] Listagem de produtos disponíveis
 - [ ] Finalização de pedidos de compra
-- [ ] Autenticação via JWT
+- [x] Autenticação via JWT
 - [ ] Validação de estoque
 - [ ] Atualização de estoque
 - [ ] Envio de e-mail de confirmação para o cliente
