@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import static com.ada.avanadestore.constants.ErrorMessages.INVALID_CREDENTIALS;
+
 @Service
 public class LoginService {
 
@@ -25,8 +27,7 @@ public class LoginService {
             UserDetails userDetails = (UserDetails) authManager.authenticate(authenticationToken).getPrincipal();
             return jwtService.generateToken(userDetails);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new BadCredentialsException("Invalid email or password");
+            throw new BadCredentialsException(INVALID_CREDENTIALS);
         }
     }
 }
