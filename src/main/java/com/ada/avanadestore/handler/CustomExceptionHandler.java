@@ -40,4 +40,11 @@ public class CustomExceptionHandler {
         StandardErrorDTO error = new StandardErrorDTO(HttpStatus.FORBIDDEN.value(), exception.getMessage(), request.getRequestURI(), request.getMethod(), new Date().toString());
         return ResponseEntity.status(error.status()).body(error);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<StandardErrorDTO> handleNullPointerException(NullPointerException exception, HttpServletRequest request) {
+        LOGGER.error("{}: {}", exception.getClass(), exception.getMessage());
+        StandardErrorDTO error = new StandardErrorDTO(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), request.getRequestURI(), request.getMethod(), new Date().toString());
+        return ResponseEntity.status(error.status()).body(error);
+    }
 }
