@@ -14,6 +14,8 @@ import java.util.Date;
 @Service
 public class JwtService {
 
+    private final Key signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
     @Value("${jwt.expTime}")
     private String expTime;
 
@@ -25,12 +27,24 @@ public class JwtService {
         String token = "Bearer " + Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(actualDate)
                 .setExpiration(expDate)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512).compact();
+                .signWith(signingKey, SignatureAlgorithm.HS512).compact();
 
         return new TokenDTO("access_token", token);
     }
 
-    private Key getSigningKey() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    public String getUsernameByToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public Boolean isValidToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .isSigned(token);
     }
 }

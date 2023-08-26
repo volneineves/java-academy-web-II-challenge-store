@@ -23,5 +23,7 @@ public class ErrorMessages {
     public static final String ZIP_SIZE_EXCEEDED = "Field zip should not exceed 9 characters";
     public static final String ZIP_INVALID_FORMAT = "Invalid zip format. Correct format is 00000-000";
     public static final String USER_NOT_FOUND = "User could not be found";
+    public static final String AUTHENTICATION_INVALID = "Authentication failed. JWT could be invalid or untrustworthy";
+    public static final String INVALID_CREDENTIALS = "Invalid credentials: Username or password";
 
 }
