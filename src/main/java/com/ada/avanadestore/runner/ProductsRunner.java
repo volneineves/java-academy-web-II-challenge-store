@@ -29,13 +29,13 @@ public class ProductsRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (isRepositoryEmpty()) {
             try {
                 List<Product> products = fetchAndTransformProducts();
                 repository.saveAll(products);
             } catch (Exception exception) {
-                LOGGER.warn("Exception: {}", exception.getMessage(), exception);
+                LOGGER.warn("{}: {}", exception.getClass(), exception.getMessage(), exception);
             }
         }
     }
