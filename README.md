@@ -19,7 +19,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
    - [Spring Boot Starter Validation](https://spring.io/guides/gs/validating-form-input/): Para validação de dados em formulários e outras entradas.
    - [Spring Boot Starter Web](https://spring.io/guides/gs/spring-boot/): Para desenvolvimento de aplicações web e RESTful.   
    - [Spring Cloud Starter OpenFeign](https://spring.io/projects/spring-cloud-openfeign): Para realização de chamadas HTTP de forma simplificada. 
-
+- [Query DSL](http://querydsl.com/): Alternativa ao JPA Repository com foco nas operações e expressividades do SQL.
 - [H2 Database](https://www.h2database.com/html/main.html): Banco de dados em memória para ambiente de desenvolvimento.
 - [PostgreSQL](https://www.postgresql.org/): Banco de dados usado em produção.
 - [Maven](https://maven.apache.org/): Ferramenta de gerenciamento de projetos e builds.
@@ -30,7 +30,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
     - [x] Validação de nome, CPF, e-mail e endereço
 - [x] Integração com API externa para produtos: [DummyJSON API](https://dummyjson.com/products/search?q=phone)
     - [x] Recuperação e armazenamento de produtos
-- [ ] Listagem de produtos disponíveis
+- [x] Listagem de produtos disponíveis
 - [ ] Finalização de pedidos de compra
 - [x] Autenticação via JWT
 - [ ] Validação de estoque
