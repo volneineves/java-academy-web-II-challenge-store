@@ -1,5 +1,7 @@
 package com.ada.avanadestore.entitity;
 
+import com.ada.avanadestore.dto.CreateOrderItemDTO;
+import com.ada.avanadestore.service.OrderItemDTO;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -19,12 +21,14 @@ public class OrderItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
-
     public OrderItem() {
     }
+
+    public OrderItem(CreateOrderItemDTO dto, Product product) {
+        this.quantity = dto.quantity();
+        this.product = product;
+    }
+
 
     public UUID getId() {
         return id;
@@ -46,11 +50,7 @@ public class OrderItem {
         this.product = product;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
+    public OrderItemDTO toDTO() {
+        return new OrderItemDTO(id, quantity, product.toDTO());
     }
 }

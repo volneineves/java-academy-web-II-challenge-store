@@ -25,5 +25,6 @@ public class ErrorMessages {
     public static final String USER_NOT_FOUND = "User could not be found";
     public static final String AUTHENTICATION_INVALID = "Authentication failed. JWT could be invalid or untrustworthy";
     public static final String INVALID_CREDENTIALS = "Invalid credentials: Username or password";
+    public static final String PRODUCT_NOT_FOUND = "Product could not be found";
 
 }
