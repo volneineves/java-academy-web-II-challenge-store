@@ -40,5 +40,16 @@ public class ErrorMessages {
     public static final String FAILURE_EVENT_CAPTURE = "Successfully captured event: ";
     public static final String SUCCESSFULLY_EVENT_PUBLISHED = "Successfully publishing event: ";
     public static final String FAILURE_EVENT_PUBLISHED = "Failure publishing event: ";
+    public static final String SUBJECT_ORDER_CREATED = "Order Created";
+    public static final String MESSAGE_ORDER_CREATED = "Congratulations! Your order has been successfully created. We will begin processing it shortly.";
+
+    public static final String SUBJECT_ORDER_IN_PROCESS = "Order In Process";
+    public static final String MESSAGE_ORDER_IN_PROCESS = "Good news! Your order is now in process. We're working hard to get it to you as soon as possible.";
+    public static final String SUBJECT_ORDER_COMPLETED = "Order Completed";
+    public static final String MESSAGE_ORDER_COMPLETED = "Fantastic! Your order has been completed and is on its way. Thank you for shopping with us.";
+    public static final String SUBJECT_ORDER_CANCELLED = "Order Cancelled";
+    public static final String MESSAGE_ORDER_CANCELLED = "We're sorry to hear that you've cancelled your order. If you have any questions or concerns, please contact our customer service.";
+    public static final String SUBJECT_ORDER_UNKNOWN = "Order Status Update";
+    public static final String MESSAGE_ORDER_UNKNOWN = "Unknown status. Please contact customer service for more information.";
 
 }

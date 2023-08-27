@@ -6,6 +6,7 @@ import com.ada.avanadestore.entitity.OrderItem;
 import com.ada.avanadestore.entitity.Product;
 import com.ada.avanadestore.entitity.User;
 import com.ada.avanadestore.enums.OrderStatus;
+import com.ada.avanadestore.event.EmailPublisher;
 import com.ada.avanadestore.event.UpdateProductQuantityPublisher;
 import com.ada.avanadestore.exception.BadRequestException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
@@ -17,6 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ada.avanadestore.constants.ErrorMessages.*;
+import static com.ada.avanadestore.enums.OrderStatus.IN_PROCESS;
 
 @Service
 public class OrderService {
@@ -26,13 +28,15 @@ public class OrderService {
     private final ProductService productService;
     private final UserService userService;
     private final UpdateProductQuantityPublisher productQuantityPublisher;
+    private final EmailPublisher emailPublisher;
 
-    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, UserService userService, UpdateProductQuantityPublisher productQuantityPublisher) {
+    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, UserService userService, UpdateProductQuantityPublisher productQuantityPublisher, EmailPublisher emailPublisher) {
         this.repository = repository;
         this.filterRepository = filterRepository;
         this.productService = productService;
         this.userService = userService;
         this.productQuantityPublisher = productQuantityPublisher;
+        this.emailPublisher = emailPublisher;
     }
 
     private Order getById(UUID id) {
@@ -49,6 +53,7 @@ public class OrderService {
         Order order = new Order(user, orderItemList);
         validateIfOrderItemsExceedAvailableProductsStock(order);
         order.setStatus(OrderStatus.CREATED);
+        sendEmailByOrder(order);
         return repository.save(order).toDTO();
     }
 
@@ -62,7 +67,8 @@ public class OrderService {
 
         order.setOrderItems(orderItemList);
         validateIfOrderItemsExceedAvailableProductsStock(order);
-        order.setStatus(OrderStatus.IN_PROCESS);
+        order.setStatus(IN_PROCESS); // TODO adicionar usuario funcionario para permitir order
+        sendEmailByOrder(order);
         return repository.save(order).toDTO();
     }
 
@@ -73,6 +79,7 @@ public class OrderService {
             case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
             default -> {
                 order.setStatus(OrderStatus.CANCELLED);
+                sendEmailByOrder(order);
                 return repository.save(order).toDTO();
             }
         }
@@ -87,6 +94,7 @@ public class OrderService {
                 validateIfOrderItemsExceedAvailableProductsStock(order);
                 order.setStatus(OrderStatus.COMPLETED);
                 sendEventToUpdateProductStock(order.getOrderItems());
+                sendEmailByOrder(order);
                 return repository.save(order).toDTO();
             }
         }
@@ -139,5 +147,35 @@ public class OrderService {
         }
 
         return new ArrayList<>(orderItemMap.values());
+    }
+
+    private void sendEmailByOrder(Order order) {
+        EmailFormDTO emailForm = createEmailForm(order);
+        emailPublisher.handleSendEmailEvent(emailForm);
+    }
+
+    private EmailFormDTO createEmailForm(Order order) {
+        String emailTo = order.getUser().getEmail();
+        String subject = SUBJECT_ORDER_UNKNOWN;
+        String message = MESSAGE_ORDER_UNKNOWN;
+
+        switch (order.getStatus()) {
+            case CREATED:
+                subject = SUBJECT_ORDER_CREATED;
+                message = MESSAGE_ORDER_CREATED;
+                break;
+            case IN_PROCESS:
+                subject = SUBJECT_ORDER_IN_PROCESS;
+                message = MESSAGE_ORDER_IN_PROCESS;
+                break;
+            case COMPLETED:
+                subject = SUBJECT_ORDER_COMPLETED;
+                message = MESSAGE_ORDER_COMPLETED;
+                break;
+            case CANCELLED:
+                subject = SUBJECT_ORDER_CANCELLED;
+                message = MESSAGE_ORDER_CANCELLED;
+        }
+        return new EmailFormDTO(emailTo, subject, message);
     }
 }

@@ -15,3 +15,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.office365.com
+    port: 587
+    username: etestando12345@hotmail.com
+    password: Ps12345678%
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

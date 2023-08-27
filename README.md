@@ -18,7 +18,9 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
    - [Spring Boot Starter Security](https://spring.io/guides/gs/securing-web/): Para funcionalidades relacionadas à segurança, como autenticação e autorização.
    - [Spring Boot Starter Validation](https://spring.io/guides/gs/validating-form-input/): Para validação de dados em formulários e outras entradas.
    - [Spring Boot Starter Web](https://spring.io/guides/gs/spring-boot/): Para desenvolvimento de aplicações web e RESTful.   
-   - [Spring Cloud Starter OpenFeign](https://spring.io/projects/spring-cloud-openfeign): Para realização de chamadas HTTP de forma simplificada. 
+   - [Spring Cloud Starter OpenFeign](https://spring.io/projects/spring-cloud-openfeign): Para realização de chamadas HTTP de forma simplificada.
+   - [Spring Boot Starter Mail](https://spring.io/guides/gs/sending-email/): Para funcionalidades de envio de e-mail.
+
 - [Query DSL](http://querydsl.com/): Alternativa ao JPA Repository com foco nas operações e expressividades do SQL.
 - [H2 Database](https://www.h2database.com/html/main.html): Banco de dados em memória para ambiente de desenvolvimento.
 - [PostgreSQL](https://www.postgresql.org/): Banco de dados usado em produção.
@@ -35,7 +37,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [x] Autenticação via JWT
 - [x] Validação de estoque
 - [x] Atualização de estoque
-- [ ] Envio de e-mail de confirmação para o cliente
+- [x] Envio de e-mail de confirmação para o cliente
 - [ ] Envio de e-mail para o responsável do departamento de vendas
 
 ## 📄 Licença
