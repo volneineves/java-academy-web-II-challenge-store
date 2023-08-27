@@ -2,6 +2,7 @@ package com.ada.avanadestore.service;
 
 import com.ada.avanadestore.dto.ProductDTO;
 import com.ada.avanadestore.dto.ProductFilterDTO;
+import com.ada.avanadestore.dto.UpdateProductQuantityDTO;
 import com.ada.avanadestore.entitity.Product;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.ProductFilterRepository;
@@ -30,5 +31,12 @@ public class ProductService {
 
     public List<ProductDTO> findByFilter(ProductFilterDTO dto) {
         return filterRepository.findByFilter(dto).stream().map(Product::toDTO).toList();
+    }
+
+    public void updateQuantity(UpdateProductQuantityDTO dto) {
+        Product product = getById(dto.id());
+        Integer stockTotal = product.getStock() - dto.quantityDecrease();
+        product.setStock(stockTotal);
+        repository.save(product);
     }
 }

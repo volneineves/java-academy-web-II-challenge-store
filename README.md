@@ -31,10 +31,10 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [x] Integração com API externa para produtos: [DummyJSON API](https://dummyjson.com/products/search?q=phone)
     - [x] Recuperação e armazenamento de produtos
 - [x] Listagem de produtos disponíveis
-- [ ] Finalização de pedidos de compra
+- [x] Finalização de pedidos de compra
 - [x] Autenticação via JWT
-- [ ] Validação de estoque
-- [ ] Atualização de estoque
+- [x] Validação de estoque
+- [x] Atualização de estoque
 - [ ] Envio de e-mail de confirmação para o cliente
 - [ ] Envio de e-mail para o responsável do departamento de vendas
 

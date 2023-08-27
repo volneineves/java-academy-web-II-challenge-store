@@ -36,5 +36,9 @@ public class ErrorMessages {
     public static final String ORDER_COMPLETED = "Requested order cannot update because it's completed";
     public static final String ORDER_NOT_FOUND = "Order could not be found";
     public static final String EXCEED_PRODUCT_STOCK = "Order exceed products quantity";
+    public static final String SUCCESSFULLY_EVENT_CAPTURE = "Successfully captured event: ";
+    public static final String FAILURE_EVENT_CAPTURE = "Successfully captured event: ";
+    public static final String SUCCESSFULLY_EVENT_PUBLISHED = "Successfully publishing event: ";
+    public static final String FAILURE_EVENT_PUBLISHED = "Failure publishing event: ";
 
 }

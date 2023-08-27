@@ -1,14 +1,12 @@
 package com.ada.avanadestore.service;
 
-import com.ada.avanadestore.dto.CreateOrderDTO;
-import com.ada.avanadestore.dto.CreateOrderItemDTO;
-import com.ada.avanadestore.dto.OrderDTO;
-import com.ada.avanadestore.dto.OrderFilterDTO;
+import com.ada.avanadestore.dto.*;
 import com.ada.avanadestore.entitity.Order;
 import com.ada.avanadestore.entitity.OrderItem;
 import com.ada.avanadestore.entitity.Product;
 import com.ada.avanadestore.entitity.User;
 import com.ada.avanadestore.enums.OrderStatus;
+import com.ada.avanadestore.event.UpdateProductQuantityPublisher;
 import com.ada.avanadestore.exception.BadRequestException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.OrderFilterRepository;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.ada.avanadestore.constants.ErrorMessages.*;
 
@@ -28,12 +25,14 @@ public class OrderService {
     private final OrderFilterRepository filterRepository;
     private final ProductService productService;
     private final UserService userService;
+    private final UpdateProductQuantityPublisher productQuantityPublisher;
 
-    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, UserService userService) {
+    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, UserService userService, UpdateProductQuantityPublisher productQuantityPublisher) {
         this.repository = repository;
         this.filterRepository = filterRepository;
         this.productService = productService;
         this.userService = userService;
+        this.productQuantityPublisher = productQuantityPublisher;
     }
 
     private Order getById(UUID id) {
@@ -86,9 +85,20 @@ public class OrderService {
             case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
             default -> {
                 validateIfOrderItemsExceedAvailableProductsStock(order);
-                order.setStatus(OrderStatus.COMPLETED); // TODO implementar captura de eventos: topico pagamentos
+                order.setStatus(OrderStatus.COMPLETED);
+                sendEventToUpdateProductStock(order.getOrderItems());
                 return repository.save(order).toDTO();
             }
+        }
+    }
+
+    private void sendEventToUpdateProductStock(List<OrderItem> orderItems) {
+
+        for (OrderItem orderItem : orderItems) {
+            UUID productId = orderItem.getProduct().getId();
+            int quantity = orderItem.getQuantity();
+            UpdateProductQuantityDTO updateProductQuantityDTO = new UpdateProductQuantityDTO(productId, quantity);
+            productQuantityPublisher.updateOder(updateProductQuantityDTO);
         }
     }
 
