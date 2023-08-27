@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,11 @@ public class CustomExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardErrorDTO> handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<StandardErrorDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+        return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<StandardErrorDTO> buildErrorResponse(Exception ex, HttpServletRequest request, HttpStatus status) {

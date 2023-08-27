@@ -1,13 +1,12 @@
 package com.ada.avanadestore.service;
 
-import com.ada.avanadestore.dto.CreateOrderDTO;
-import com.ada.avanadestore.dto.CreateOrderItemDTO;
-import com.ada.avanadestore.dto.OrderDTO;
+import com.ada.avanadestore.dto.*;
 import com.ada.avanadestore.entitity.Order;
 import com.ada.avanadestore.entitity.OrderItem;
 import com.ada.avanadestore.entitity.Product;
 import com.ada.avanadestore.entitity.User;
 import com.ada.avanadestore.enums.OrderStatus;
+import com.ada.avanadestore.repository.OrderFilterRepository;
 import com.ada.avanadestore.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +16,19 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository repository;
+    private final OrderFilterRepository filterRepository;
     private final ProductService productService;
     private final UserService userService;
 
-    public OrderService(OrderRepository repository, ProductService productService, UserService userService) {
+    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, UserService userService) {
         this.repository = repository;
+        this.filterRepository = filterRepository;
         this.productService = productService;
         this.userService = userService;
+    }
+
+    public List<OrderDTO> findByFilter(OrderFilterDTO dto) {
+        return filterRepository.findByFilter(dto).stream().map(Order::toDTO).toList();
     }
 
     public OrderDTO create(CreateOrderDTO dto) {
