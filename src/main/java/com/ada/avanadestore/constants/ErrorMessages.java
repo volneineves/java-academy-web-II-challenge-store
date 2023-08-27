@@ -35,5 +35,6 @@ public class ErrorMessages {
     public static final String ORDER_CANCELLED = "Requested order cannot update because it's cancelled";
     public static final String ORDER_COMPLETED = "Requested order cannot update because it's completed";
     public static final String ORDER_NOT_FOUND = "Order could not be found";
+    public static final String EXCEED_PRODUCT_STOCK = "Order exceed products quantity";
 
 }

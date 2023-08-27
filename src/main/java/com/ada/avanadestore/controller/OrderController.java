@@ -48,4 +48,16 @@ public class OrderController {
         OrderDTO updatedOrder = service.update(id, dto);
         return ResponseEntity.ok(updatedOrder);
     }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<OrderDTO> cancel(@PathVariable UUID id) {
+        OrderDTO cancelledOrder = service.cancel(id);
+        return ResponseEntity.ok(cancelledOrder);
+    }
+
+    @PatchMapping("/{id}/finalize")
+    public ResponseEntity<OrderDTO> finalize(@PathVariable UUID id) {
+        OrderDTO finalizedOrder = service.finalize(id);
+        return ResponseEntity.ok(finalizedOrder);
+    }
 }

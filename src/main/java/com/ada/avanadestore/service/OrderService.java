@@ -16,7 +16,10 @@ import com.ada.avanadestore.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ada.avanadestore.constants.ErrorMessages.*;
 
@@ -35,6 +38,10 @@ public class OrderService {
         this.userService = userService;
     }
 
+    private Order getById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND));
+    }
+
     public List<OrderDTO> findByFilter(OrderFilterDTO dto) {
         return filterRepository.findByFilter(dto).stream().map(Order::toDTO).toList();
     }
@@ -43,12 +50,13 @@ public class OrderService {
         List<OrderItem> orderItemList = prepareOrderItems(dto.orderItems());
         User user = userService.getById(dto.user());
         Order order = new Order(user, orderItemList);
+        validateIfOrderItemsExceedAvailableProductsStock(order);
         order.setStatus(OrderStatus.CREATED);
         return repository.save(order).toDTO();
     }
 
     public OrderDTO update(UUID id, List<CreateOrderItemDTO> orderItemDTOList) {
-        Order order = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND));
+        Order order = getById(id);
         List<OrderItem> orderItemList = switch (order.getStatus()) {
             case CANCELLED -> throw new BadRequestException(ORDER_CANCELLED);
             case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
@@ -56,8 +64,50 @@ public class OrderService {
         };
 
         order.setOrderItems(orderItemList);
+        validateIfOrderItemsExceedAvailableProductsStock(order);
         order.setStatus(OrderStatus.IN_PROCESS);
         return repository.save(order).toDTO();
+    }
+
+    public OrderDTO cancel(UUID id) {
+        Order order = getById(id);
+        switch (order.getStatus()) {
+            case CANCELLED -> throw new BadRequestException(ORDER_CANCELLED);
+            case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
+            default -> {
+                order.setStatus(OrderStatus.CANCELLED);
+                return repository.save(order).toDTO();
+            }
+        }
+    }
+
+    public OrderDTO finalize(UUID id) {
+        Order order = getById(id);
+        switch (order.getStatus()) {
+            case CANCELLED -> throw new BadRequestException(ORDER_CANCELLED);
+            case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
+            default -> {
+                validateIfOrderItemsExceedAvailableProductsStock(order);
+                order.setStatus(OrderStatus.COMPLETED); // TODO implementar captura de eventos: topico pagamentos
+                return repository.save(order).toDTO();
+            }
+        }
+    }
+
+    public void validateIfOrderItemsExceedAvailableProductsStock(Order order) {
+        Set<Product> products = order.getOrderItems().stream()
+                .map(OrderItem::getProduct)
+                .collect(Collectors.toSet());
+
+        products.forEach(product -> {
+            int totalOrderItemsQuantityByProduct = order.getOrderItems().stream()
+                    .filter(orderItem -> orderItem.getProduct().getId().equals(product.getId()))
+                    .mapToInt(OrderItem::getQuantity)
+                    .sum();
+            if (totalOrderItemsQuantityByProduct > product.getStock()) {
+                throw new BadRequestException(EXCEED_PRODUCT_STOCK);
+            }
+        });
     }
 
     private List<OrderItem> prepareOrderItems(List<CreateOrderItemDTO> orderItemDTOList) {

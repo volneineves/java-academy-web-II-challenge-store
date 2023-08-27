@@ -1,6 +1,7 @@
 package com.ada.avanadestore.handler;
 
 import com.ada.avanadestore.dto.StandardErrorDTO;
+import com.ada.avanadestore.exception.BadRequestException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -55,6 +56,11 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<StandardErrorDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+        return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<StandardErrorDTO> handleBadRequestException(BadRequestException ex, HttpServletRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
     }
 
