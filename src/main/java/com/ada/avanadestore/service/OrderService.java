@@ -1,16 +1,24 @@
 package com.ada.avanadestore.service;
 
-import com.ada.avanadestore.dto.*;
+import com.ada.avanadestore.dto.CreateOrderDTO;
+import com.ada.avanadestore.dto.CreateOrderItemDTO;
+import com.ada.avanadestore.dto.OrderDTO;
+import com.ada.avanadestore.dto.OrderFilterDTO;
 import com.ada.avanadestore.entitity.Order;
 import com.ada.avanadestore.entitity.OrderItem;
 import com.ada.avanadestore.entitity.Product;
 import com.ada.avanadestore.entitity.User;
 import com.ada.avanadestore.enums.OrderStatus;
+import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.OrderFilterRepository;
 import com.ada.avanadestore.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+
+import static com.ada.avanadestore.constants.ErrorMessages.*;
 
 @Service
 public class OrderService {
@@ -36,6 +44,18 @@ public class OrderService {
         User user = userService.getById(dto.user());
         Order order = new Order(user, orderItemList);
         setOrderStatus(order, OrderStatus.CREATED);
+        return repository.save(order).toDTO();
+    }
+
+    public OrderDTO update(UUID id, List<CreateOrderItemDTO> orderItemDTOList) {
+        Order order = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND));
+        List<OrderItem> orderItemList = switch (order.getStatus()) {
+            case CANCELLED -> throw new BadRequestException(ORDER_CANCELLED);
+            case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
+            default -> prepareOrderItems(orderItemDTOList);
+        };
+
+        order.setOrderItems(orderItemList);
         return repository.save(order).toDTO();
     }
 

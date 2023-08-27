@@ -1,6 +1,7 @@
 package com.ada.avanadestore.controller;
 
 import com.ada.avanadestore.dto.CreateOrderDTO;
+import com.ada.avanadestore.dto.CreateOrderItemDTO;
 import com.ada.avanadestore.dto.OrderDTO;
 import com.ada.avanadestore.dto.OrderFilterDTO;
 import com.ada.avanadestore.enums.OrderStatus;
@@ -40,5 +41,11 @@ public class OrderController {
     public ResponseEntity<OrderDTO> create(@RequestBody @Valid CreateOrderDTO dto) {
         OrderDTO createdOrder = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<OrderDTO> update(@PathVariable UUID id, @RequestBody List<CreateOrderItemDTO> dto) {
+        OrderDTO updatedOrder = service.update(id, dto);
+        return ResponseEntity.ok(updatedOrder);
     }
 }

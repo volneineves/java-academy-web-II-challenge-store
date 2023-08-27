@@ -32,5 +32,8 @@ public class ErrorMessages {
     public static final String PRODUCT_NOT_NULL = "Field cannot be null: product";
     public static final String QUANTITY_NOT_NULL = "Field cannot be empty: quantity";
     public static final String QUANTITY_MIN_VALUE = "Field cannot be low than 1: quantity";
+    public static final String ORDER_CANCELLED = "Requested order cannot update because it's cancelled";
+    public static final String ORDER_COMPLETED = "Requested order cannot update because it's completed";
+    public static final String ORDER_NOT_FOUND = "Order could not be found";
 
 }

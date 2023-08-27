@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class Order {
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -66,8 +67,9 @@ public class Order {
         return orderItems;
     }
 
-    public void setOrderItems(List<OrderItem> itemOrders) {
-        this.orderItems = itemOrders;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems.clear();
+        this.orderItems.addAll(orderItems);
     }
 
     public OrderStatus getStatus() {
