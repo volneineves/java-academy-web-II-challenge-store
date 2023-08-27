@@ -51,5 +51,8 @@ public class ErrorMessages {
     public static final String MESSAGE_ORDER_CANCELLED = "We're sorry to hear that you've cancelled your order. If you have any questions or concerns, please contact our customer service.";
     public static final String SUBJECT_ORDER_UNKNOWN = "Order Status Update";
     public static final String MESSAGE_ORDER_UNKNOWN = "Unknown status. Please contact customer service for more information.";
+    public static final String MESSAGE_WELCOME_NEW_USER = "Welcome to our store! We're excited to have you join our community.";
+    public static final String SUBJECT_WELCOME_NEW_USER = "Welcome";
+
 
 }
