@@ -43,7 +43,7 @@ public class OrderService {
         List<OrderItem> orderItemList = prepareOrderItems(dto.orderItems());
         User user = userService.getById(dto.user());
         Order order = new Order(user, orderItemList);
-        setOrderStatus(order, OrderStatus.CREATED);
+        order.setStatus(OrderStatus.CREATED);
         return repository.save(order).toDTO();
     }
 
@@ -56,6 +56,7 @@ public class OrderService {
         };
 
         order.setOrderItems(orderItemList);
+        order.setStatus(OrderStatus.IN_PROCESS);
         return repository.save(order).toDTO();
     }
 
@@ -65,8 +66,4 @@ public class OrderService {
             return new OrderItem(orderItem, product);
         }).toList();
     }
-    private static void setOrderStatus(Order order, OrderStatus status) {
-        order.setStatus(status);
-    }
-
 }
