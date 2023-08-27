@@ -15,9 +15,7 @@ import com.ada.avanadestore.repository.OrderFilterRepository;
 import com.ada.avanadestore.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -111,9 +109,25 @@ public class OrderService {
     }
 
     private List<OrderItem> prepareOrderItems(List<CreateOrderItemDTO> orderItemDTOList) {
-        return orderItemDTOList.stream().map(orderItem -> {
-            Product product = productService.getById(orderItem.product());
-            return new OrderItem(orderItem, product);
-        }).toList();
+        Map<UUID, OrderItem> orderItemMap = new HashMap<>();
+
+        for (CreateOrderItemDTO orderItemDTO : orderItemDTOList) {
+
+            UUID productId = orderItemDTO.product();
+            Product product = productService.getById(productId);
+
+            boolean isProductAlreadyExists = orderItemMap.containsKey(productId);
+
+            if (isProductAlreadyExists) {
+                OrderItem existingOrderItem = orderItemMap.get(productId);
+                int updatedQuantity = existingOrderItem.getQuantity() + orderItemDTO.quantity();
+                existingOrderItem.setQuantity(updatedQuantity);
+            } else {
+                OrderItem newOrderItem = new OrderItem(orderItemDTO, product);
+                orderItemMap.put(productId, newOrderItem);
+            }
+        }
+
+        return new ArrayList<>(orderItemMap.values());
     }
 }
