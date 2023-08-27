@@ -24,8 +24,8 @@ public class Order {
     private Date orderDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -37,9 +37,9 @@ public class Order {
     public Order() {
     }
 
-    public Order(User user, List<OrderItem> orderItems) {
+    public Order(Customer customer, List<OrderItem> orderItems) {
         this.orderDate = new Date();
-        this.user = user;
+        this.customer = customer;
         this.orderItems = orderItems;
     }
 
@@ -55,12 +55,12 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public List<OrderItem> getOrderItems() {

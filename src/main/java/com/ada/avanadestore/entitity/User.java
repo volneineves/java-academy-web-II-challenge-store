@@ -13,50 +13,51 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type")
 @Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    protected UUID id;
 
     @Column(nullable = false, length = 80)
-    private String name;
+    protected String name;
 
     @Column(nullable = false, length = 100, unique = true)
-    private String email;
+    protected String email;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(length = 14, unique = true)
-    private String cpf;
+    protected String password;
 
     @Column(nullable = false)
-    private LocalDate birthdate;
+    protected LocalDate birthdate;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private Date createdAt = new Date();
+    protected Date createdAt = new Date();
 
     @Column(nullable = false)
     @UpdateTimestamp
-    private Date updatedAt = new Date();
+    protected Date updatedAt = new Date();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Address address;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    protected Address address;
+
+    protected Boolean isActive;
 
     public User() {
 
     }
 
     public User(UserDTO dto) {
-        this.name = dto.name();
-        this.email = dto.email();
-        this.password = dto.password();
-        this.cpf = dto.cpf();
-        this.birthdate = dto.birthdate();
-        this.address = new Address(dto.address());
+        this.name = dto.getName();
+        this.email = dto.getEmail();
+        this.password = dto.getPassword();
+        this.birthdate = dto.getBirthdate();
+        this.address = new Address(dto.getAddress());
+        this.isActive = true;
     }
 
     public UUID getId() {
@@ -88,14 +89,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -120,8 +113,16 @@ public class User implements UserDetails {
         this.birthdate = birthdate;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
     public UserDTO toDTO() {
-        return new UserDTO(id, name, email, "********", cpf, birthdate, address.toDTO(), createdAt, updatedAt);
+        return new UserDTO(id, name, email, "********", birthdate, address.toDTO(), createdAt, updatedAt);
     }
 
     @Override
@@ -136,12 +137,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isActive;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isActive;
     }
 
     @Override
@@ -151,6 +152,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }

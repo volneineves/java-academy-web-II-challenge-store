@@ -6,7 +6,6 @@ public class Messages {
     public static final String EMAIL_CANNOT_BE_NULL = "Field cannot be null: email";
     public static final String PASSWORD_CANNOT_BE_NULL = "Field cannot be null: password";
     public static final String PASSWORD_MIN_LENGTH_8 = "Field password must be at least 8 characters";
-    public static final String CPF_CANNOT_BE_NULL = "Field cannot be null: cpf";
     public static final String BIRTHDATE_CANNOT_BE_NULL = "Field cannot be null: birthdate";
     public static final String INVALID_CPF_FORMAT = "Invalid cpf. Correct format is xxx.xxx.xxx-xx";
     public static final String INVALID_EMAIL_FORMAT = "Invalid email. Correct format is user@mailprovider.com";
@@ -23,6 +22,7 @@ public class Messages {
     public static final String ZIP_SIZE_EXCEEDED = "Field zip should not exceed 9 characters";
     public static final String ZIP_INVALID_FORMAT = "Invalid zip format. Correct format is 00000-000";
     public static final String USER_NOT_FOUND = "User could not be found";
+    public static final String CUSTOMER_NOT_FOUND = "Customer could not be found";
     public static final String AUTHENTICATION_INVALID = "Authentication failed. JWT could be invalid or untrustworthy";
     public static final String INVALID_CREDENTIALS = "Invalid credentials: Username or password";
     public static final String PRODUCT_NOT_FOUND = "Product could not be found";
@@ -51,8 +51,10 @@ public class Messages {
     public static final String MESSAGE_ORDER_CANCELLED = "We're sorry to hear that you've cancelled your order. If you have any questions or concerns, please contact our customer service.";
     public static final String SUBJECT_ORDER_UNKNOWN = "Order Status Update";
     public static final String MESSAGE_ORDER_UNKNOWN = "Unknown status. Please contact customer service for more information.";
-    public static final String MESSAGE_WELCOME_NEW_USER = "Welcome to our store! We're excited to have you join our community.";
-    public static final String SUBJECT_WELCOME_NEW_USER = "Welcome";
+    public static final String MESSAGE_WELCOME_NEW_CUSTOMER = "Welcome to our store! We're excited to have you join our community.";
+    public static final String SUBJECT_WELCOME_NEW_CUSTOMER = "Welcome";
+    public static final String DATA_INTEGRITY_ERROR = "There was an issue with the data integrity";
+    public static final String INTERNAL_SERVER_ERROR = "An unexpected error occurred";
 
 
 }

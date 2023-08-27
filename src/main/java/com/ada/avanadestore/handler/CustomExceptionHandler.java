@@ -2,6 +2,7 @@ package com.ada.avanadestore.handler;
 
 import com.ada.avanadestore.dto.StandardErrorDTO;
 import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -62,6 +63,11 @@ public class CustomExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<StandardErrorDTO> handleBadRequestException(BadRequestException ex, HttpServletRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InternalServerException.class)
+    public ResponseEntity<StandardErrorDTO> handleBadRequestException(InternalServerException ex, HttpServletRequest request) {
+        return buildErrorResponse(ex, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<StandardErrorDTO> buildErrorResponse(Exception ex, HttpServletRequest request, HttpStatus status) {

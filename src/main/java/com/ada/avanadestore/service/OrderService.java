@@ -4,7 +4,7 @@ import com.ada.avanadestore.dto.*;
 import com.ada.avanadestore.entitity.Order;
 import com.ada.avanadestore.entitity.OrderItem;
 import com.ada.avanadestore.entitity.Product;
-import com.ada.avanadestore.entitity.User;
+import com.ada.avanadestore.entitity.Customer;
 import com.ada.avanadestore.enums.OrderStatus;
 import com.ada.avanadestore.event.EmailPublisher;
 import com.ada.avanadestore.event.UpdateProductQuantityPublisher;
@@ -26,15 +26,15 @@ public class OrderService {
     private final OrderRepository repository;
     private final OrderFilterRepository filterRepository;
     private final ProductService productService;
-    private final UserService userService;
+    private final CustomerService customerService;
     private final UpdateProductQuantityPublisher productQuantityPublisher;
     private final EmailPublisher emailPublisher;
 
-    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, UserService userService, UpdateProductQuantityPublisher productQuantityPublisher, EmailPublisher emailPublisher) {
+    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, CustomerService customerService, UpdateProductQuantityPublisher productQuantityPublisher, EmailPublisher emailPublisher) {
         this.repository = repository;
         this.filterRepository = filterRepository;
         this.productService = productService;
-        this.userService = userService;
+        this.customerService = customerService;
         this.productQuantityPublisher = productQuantityPublisher;
         this.emailPublisher = emailPublisher;
     }
@@ -49,7 +49,7 @@ public class OrderService {
 
     public OrderDTO create(CreateOrderDTO dto) {
         List<OrderItem> orderItemList = prepareOrderItems(dto.orderItems());
-        User user = userService.getById(dto.user());
+        Customer user = customerService.getById(dto.user());
         Order order = new Order(user, orderItemList);
         validateIfOrderItemsExceedAvailableProductsStock(order);
         order.setStatus(OrderStatus.CREATED);
@@ -155,7 +155,7 @@ public class OrderService {
     }
 
     private EmailFormDTO createEmailForm(Order order) {
-        String emailTo = order.getUser().getEmail();
+        String emailTo = order.getCustomer().getEmail();
         String subject = SUBJECT_ORDER_UNKNOWN;
         String message = MESSAGE_ORDER_UNKNOWN;
 
