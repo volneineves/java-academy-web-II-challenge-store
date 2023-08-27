@@ -1,4 +1,4 @@
-package com.ada.avanadestore.service;
+package com.ada.avanadestore.dto;
 
 import com.ada.avanadestore.enums.OrderStatus;
 

@@ -1,7 +1,7 @@
 package com.ada.avanadestore.controller;
 
 import com.ada.avanadestore.dto.CreateOrderDTO;
-import com.ada.avanadestore.service.OrderDTO;
+import com.ada.avanadestore.dto.OrderDTO;
 import com.ada.avanadestore.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

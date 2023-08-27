@@ -1,8 +1,8 @@
 package com.ada.avanadestore.entitity;
 
 import com.ada.avanadestore.enums.OrderStatus;
-import com.ada.avanadestore.service.OrderDTO;
-import com.ada.avanadestore.service.OrderItemDTO;
+import com.ada.avanadestore.dto.OrderDTO;
+import com.ada.avanadestore.dto.OrderItemDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

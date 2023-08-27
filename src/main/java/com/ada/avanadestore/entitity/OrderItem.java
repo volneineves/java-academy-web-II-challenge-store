@@ -1,7 +1,7 @@
 package com.ada.avanadestore.entitity;
 
 import com.ada.avanadestore.dto.CreateOrderItemDTO;
-import com.ada.avanadestore.service.OrderItemDTO;
+import com.ada.avanadestore.dto.OrderItemDTO;
 import jakarta.persistence.*;
 
 import java.util.UUID;
