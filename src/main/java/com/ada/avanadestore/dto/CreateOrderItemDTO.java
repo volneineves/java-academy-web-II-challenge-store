@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-import static com.ada.avanadestore.constants.ErrorMessages.*;
+import static com.ada.avanadestore.constants.Messages.*;
 
 public record CreateOrderItemDTO(
         @NotNull(message = QUANTITY_NOT_NULL) @Min(value = 1, message = QUANTITY_MIN_VALUE) Integer quantity,

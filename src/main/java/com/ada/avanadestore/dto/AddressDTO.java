@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
-import static com.ada.avanadestore.constants.ErrorMessages.*;
+import static com.ada.avanadestore.constants.Messages.*;
 import static com.ada.avanadestore.constants.RegexPatterns.ZIP_FORMAT;
 
 public record AddressDTO(UUID id,

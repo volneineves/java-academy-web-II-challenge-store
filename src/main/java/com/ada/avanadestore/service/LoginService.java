@@ -8,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import static com.ada.avanadestore.constants.ErrorMessages.INVALID_CREDENTIALS;
+import static com.ada.avanadestore.constants.Messages.INVALID_CREDENTIALS;
 
 @Service
 public class LoginService {

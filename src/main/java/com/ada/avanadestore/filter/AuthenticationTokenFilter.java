@@ -21,7 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Date;
 
-import static com.ada.avanadestore.constants.ErrorMessages.AUTHENTICATION_INVALID;
+import static com.ada.avanadestore.constants.Messages.AUTHENTICATION_INVALID;
 
 @Component
 public class AuthenticationTokenFilter extends OncePerRequestFilter {

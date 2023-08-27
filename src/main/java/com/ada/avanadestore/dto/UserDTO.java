@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.ada.avanadestore.constants.ErrorMessages.*;
+import static com.ada.avanadestore.constants.Messages.*;
 
 
 public record UserDTO(UUID id,

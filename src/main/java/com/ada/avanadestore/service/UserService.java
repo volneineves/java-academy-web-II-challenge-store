@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static com.ada.avanadestore.constants.ErrorMessages.*;
+import static com.ada.avanadestore.constants.Messages.*;
 
 @Service
 public class UserService {

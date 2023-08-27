@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static com.ada.avanadestore.constants.ErrorMessages.PRODUCT_NOT_FOUND;
+import static com.ada.avanadestore.constants.Messages.PRODUCT_NOT_FOUND;
 
 @Service
 public class ProductService {

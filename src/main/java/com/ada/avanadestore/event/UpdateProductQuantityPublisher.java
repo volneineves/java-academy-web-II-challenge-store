@@ -8,8 +8,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import static com.ada.avanadestore.constants.ErrorMessages.FAILURE_EVENT_PUBLISHED;
-import static com.ada.avanadestore.constants.ErrorMessages.SUCCESSFULLY_EVENT_PUBLISHED;
+import static com.ada.avanadestore.constants.Messages.FAILURE_EVENT_PUBLISHED;
+import static com.ada.avanadestore.constants.Messages.SUCCESSFULLY_EVENT_PUBLISHED;
 
 @Component
 public class UpdateProductQuantityPublisher {

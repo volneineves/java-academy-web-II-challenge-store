@@ -1,6 +1,6 @@
 package com.ada.avanadestore.constants;
 
-public class ErrorMessages {
+public class Messages {
 
     public static final String NAME_CANNOT_BE_EMPTY_NULL = "Field cannot be empty or null: name";
     public static final String EMAIL_CANNOT_BE_NULL = "Field cannot be null: email";

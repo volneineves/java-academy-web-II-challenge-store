@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static com.ada.avanadestore.constants.ErrorMessages.USER_NOT_FOUND;
+import static com.ada.avanadestore.constants.Messages.USER_NOT_FOUND;
 
 @Service
 public class AuthService implements UserDetailsService {
