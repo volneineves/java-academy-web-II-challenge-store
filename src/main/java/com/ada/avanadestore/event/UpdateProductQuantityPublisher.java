@@ -20,7 +20,7 @@ public class UpdateProductQuantityPublisher {
         this.eventPublisher = eventPublisher;
     }
 
-    public void updateOder(UpdateProductQuantityDTO dto) {
+    public void handleUpdateProductQuantityEvent(UpdateProductQuantityDTO dto) {
         try {
             LOGGER.info(SUCCESSFULLY_EVENT_PUBLISHED + "handleUpdateProductQuantityEvent");
             eventPublisher.publishEvent(dto);

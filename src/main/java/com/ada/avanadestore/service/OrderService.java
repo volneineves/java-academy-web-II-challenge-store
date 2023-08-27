@@ -98,7 +98,7 @@ public class OrderService {
             UUID productId = orderItem.getProduct().getId();
             int quantity = orderItem.getQuantity();
             UpdateProductQuantityDTO updateProductQuantityDTO = new UpdateProductQuantityDTO(productId, quantity);
-            productQuantityPublisher.updateOder(updateProductQuantityDTO);
+            productQuantityPublisher.handleUpdateProductQuantityEvent(updateProductQuantityDTO);
         }
     }
 
