@@ -24,7 +24,7 @@ import static com.ada.avanadestore.constants.Messages.*;
 @Service
 public class CustomerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
     private final CustomerRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final EmailPublisher emailPublisher;

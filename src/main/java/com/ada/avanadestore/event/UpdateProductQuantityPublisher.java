@@ -14,7 +14,7 @@ import static com.ada.avanadestore.constants.Messages.SUCCESSFULLY_EVENT_PUBLISH
 @Component
 public class UpdateProductQuantityPublisher {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateProductQuantityPublisher.class);
     private final ApplicationEventPublisher eventPublisher;
 
     public UpdateProductQuantityPublisher(ApplicationEventPublisher eventPublisher) {

@@ -11,8 +11,6 @@ import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.OrderFilterRepository;
 import com.ada.avanadestore.repository.OrderRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,6 @@ import static com.ada.avanadestore.enums.OrderStatus.IN_PROCESS;
 @Service
 public class OrderService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
     private final OrderRepository repository;
     private final OrderFilterRepository filterRepository;
     private final ProductService productService;

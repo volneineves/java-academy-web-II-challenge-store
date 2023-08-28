@@ -15,7 +15,7 @@ import static com.ada.avanadestore.constants.Messages.SUCCESSFULLY_EVENT_CAPTURE
 @Component
 public class UpdateProductQuantityConsumer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateProductQuantityConsumer.class);
     private final ProductService productService;
 
     public UpdateProductQuantityConsumer(ProductService productService) {

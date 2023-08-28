@@ -1,7 +1,7 @@
 package com.ada.avanadestore.service;
 
-import com.ada.avanadestore.dto.UserEmailFormDTO;
 import com.ada.avanadestore.dto.EmployeeDTO;
+import com.ada.avanadestore.dto.UserEmailFormDTO;
 import com.ada.avanadestore.entitity.Address;
 import com.ada.avanadestore.entitity.Department;
 import com.ada.avanadestore.entitity.Employee;
@@ -12,8 +12,6 @@ import com.ada.avanadestore.exception.BadRequestException;
 import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.EmployeeRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,6 @@ import static com.ada.avanadestore.constants.Messages.*;
 @Service
 public class EmployeeService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
     private final EmployeeRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final EmailPublisher emailPublisher;
@@ -117,6 +114,7 @@ public class EmployeeService {
         UserEmailFormDTO userEmailFormDTO = new UserEmailFormDTO(user.getEmail(), SUBJECT_USER_DATA_UPDATED, MESSAGE_USER_DATA_UPDATED);
         emailPublisher.handleSendEmailEventUser(userEmailFormDTO);
     }
+
     private void sendEmailForDisabledUser(User user) {
         UserEmailFormDTO userEmailFormDTO = new UserEmailFormDTO(user.getEmail(), SUBJECT_USER_DATA_UPDATED, MESSAGE_USER_DISABLED);
         emailPublisher.handleSendEmailEventUser(userEmailFormDTO);

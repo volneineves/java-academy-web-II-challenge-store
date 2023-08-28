@@ -19,7 +19,7 @@ import static com.ada.avanadestore.constants.Messages.AUTHENTICATION_INVALID;
 @Component
 public class CustomAuthenticationEntryPointHandler implements AuthenticationEntryPoint {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationEntryPointHandler.class);
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
