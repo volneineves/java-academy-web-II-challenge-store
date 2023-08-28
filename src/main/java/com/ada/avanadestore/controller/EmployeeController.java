@@ -20,7 +20,7 @@ public class EmployeeController {
         this.service = service;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> findById(@PathVariable("id") UUID id) {
         EmployeeDTO employeeDTO = service.findById(id);
