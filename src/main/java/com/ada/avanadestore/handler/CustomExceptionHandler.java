@@ -2,6 +2,7 @@ package com.ada.avanadestore.handler;
 
 import com.ada.avanadestore.dto.StandardErrorDTO;
 import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.DatabaseException;
 import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,11 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.ada.avanadestore.constants.RegexPatterns.POSTGRES_DB_ERROR_PATTERN;
+import static com.ada.avanadestore.util.JavaUtil.doRegexPattern;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
@@ -38,6 +43,12 @@ public class CustomExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<StandardErrorDTO> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardErrorDTO> handleBadCredentials(DatabaseException ex, HttpServletRequest request) {
+        String message = doRegexPattern(POSTGRES_DB_ERROR_PATTERN, Objects.requireNonNull(ex.getRootCause()).getMessage());
+        return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST, message);
     }
 
     @ExceptionHandler(NullPointerException.class)

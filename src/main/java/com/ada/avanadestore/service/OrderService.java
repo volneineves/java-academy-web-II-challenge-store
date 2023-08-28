@@ -7,6 +7,7 @@ import com.ada.avanadestore.enums.OrderStatus;
 import com.ada.avanadestore.event.EmailPublisher;
 import com.ada.avanadestore.event.UpdateProductQuantityPublisher;
 import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.DatabaseException;
 import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.OrderFilterRepository;
@@ -134,7 +135,7 @@ public class OrderService {
         try {
             repository.save(order);
         } catch (DataIntegrityViolationException e) {
-            throw new BadRequestException(DATA_INTEGRITY_ERROR);
+            throw new DatabaseException(e.getMessage(), e.getRootCause());
         } catch (Exception e) {
             throw new InternalServerException(INTERNAL_SERVER_ERROR);
         }

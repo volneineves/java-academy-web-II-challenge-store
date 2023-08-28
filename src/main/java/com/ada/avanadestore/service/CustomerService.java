@@ -7,6 +7,7 @@ import com.ada.avanadestore.entitity.Customer;
 import com.ada.avanadestore.entitity.User;
 import com.ada.avanadestore.event.EmailPublisher;
 import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.DatabaseException;
 import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.handler.CustomExceptionHandler;
@@ -17,9 +18,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 import static com.ada.avanadestore.constants.Messages.*;
+import static com.ada.avanadestore.constants.RegexPatterns.POSTGRES_DB_ERROR_PATTERN;
+import static com.ada.avanadestore.util.JavaUtil.doRegexPattern;
 
 @Service
 public class CustomerService {
@@ -80,10 +84,8 @@ public class CustomerService {
         try {
             repository.save(customer);
         } catch (DataIntegrityViolationException e) {
-            LOGGER.error("{}: {}", e.getClass().getName(), e.getMessage());
-            throw new BadRequestException(DATA_INTEGRITY_ERROR);
+            throw new DatabaseException(e.getMessage(), e.getRootCause());
         } catch (Exception e) {
-            LOGGER.error("{}: {}", e.getClass().getName(), e.getMessage());
             throw new InternalServerException(INTERNAL_SERVER_ERROR);
         }
     }

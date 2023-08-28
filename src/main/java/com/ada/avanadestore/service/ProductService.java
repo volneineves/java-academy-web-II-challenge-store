@@ -5,6 +5,7 @@ import com.ada.avanadestore.dto.ProductFilterDTO;
 import com.ada.avanadestore.dto.UpdateProductQuantityDTO;
 import com.ada.avanadestore.entitity.Product;
 import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.DatabaseException;
 import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.ProductFilterRepository;
@@ -47,7 +48,7 @@ public class ProductService {
         try {
             repository.save(product);
         } catch (DataIntegrityViolationException e) {
-            throw new BadRequestException(DATA_INTEGRITY_ERROR);
+            throw new DatabaseException(e.getMessage(), e.getRootCause());
         } catch (Exception e) {
             throw new InternalServerException(INTERNAL_SERVER_ERROR);
         }

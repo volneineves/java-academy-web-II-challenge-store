@@ -9,6 +9,7 @@ import com.ada.avanadestore.entitity.User;
 import com.ada.avanadestore.enums.EmployeeRoles;
 import com.ada.avanadestore.event.EmailPublisher;
 import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.DatabaseException;
 import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.EmployeeRepository;
@@ -94,7 +95,7 @@ public class EmployeeService {
         try {
             repository.save(employee);
         } catch (DataIntegrityViolationException e) {
-            throw new BadRequestException(DATA_INTEGRITY_ERROR);
+            throw new DatabaseException(e.getMessage(), e.getRootCause());
         } catch (Exception e) {
             throw new InternalServerException(INTERNAL_SERVER_ERROR);
         }
