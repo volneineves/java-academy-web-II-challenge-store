@@ -38,7 +38,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [x] Validação de estoque
 - [x] Atualização de estoque
 - [x] Envio de e-mail de confirmação para o cliente
-- [ ] Envio de e-mail para o responsável do departamento de vendas
+- [x] Envio de e-mail para o responsável do departamento de vendas
 
 ## 📄 Licença
 
