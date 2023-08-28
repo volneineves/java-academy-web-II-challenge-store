@@ -23,7 +23,7 @@ public class Messages {
     public static final String ZIP_INVALID_FORMAT = "Invalid zip format. Correct format is 00000-000";
     public static final String USER_NOT_FOUND = "User could not be found";
     public static final String CUSTOMER_NOT_FOUND = "Customer could not be found";
-    public static final String AUTHENTICATION_INVALID = "Authentication failed. JWT could be invalid or untrustworthy";
+    public static final String AUTHENTICATION_INVALID = "Authentication failed. JWT could be invalid, untrustworthy or empty";
     public static final String INVALID_CREDENTIALS = "Invalid credentials: Username or password";
     public static final String PRODUCT_NOT_FOUND = "Product could not be found";
     public static final String USER_NOT_NULL = "Field cannot be null: user";
@@ -42,7 +42,6 @@ public class Messages {
     public static final String FAILURE_EVENT_PUBLISHED = "Failure publishing event: ";
     public static final String SUBJECT_ORDER_CREATED = "Order Created";
     public static final String MESSAGE_ORDER_CREATED = "Congratulations! Your order has been successfully created. We will begin processing it shortly.";
-
     public static final String SUBJECT_ORDER_IN_PROCESS = "Order In Process";
     public static final String MESSAGE_ORDER_IN_PROCESS = "Good news! Your order is now in process. We're working hard to get it to you as soon as possible.";
     public static final String SUBJECT_ORDER_COMPLETED = "Order Completed";
@@ -53,8 +52,16 @@ public class Messages {
     public static final String MESSAGE_ORDER_UNKNOWN = "Unknown status. Please contact customer service for more information.";
     public static final String MESSAGE_WELCOME_NEW_CUSTOMER = "Welcome to our store! We're excited to have you join our community.";
     public static final String SUBJECT_WELCOME_NEW_CUSTOMER = "Welcome";
+    public static final String MESSAGE_USER_DATA_UPDATED = "Your account information has been successfully updated.";
+    public static final String MESSAGE_USER_DISABLED = "Your account has been disabled.";
+    public static final String SUBJECT_USER_DATA_UPDATED = "Account Information Updated";
+
     public static final String DATA_INTEGRITY_ERROR = "There was an issue with the data integrity";
     public static final String INTERNAL_SERVER_ERROR = "An unexpected error occurred";
-
+    public static final String DEPARTMENT_NOT_FOUND = "Department could not be found";
+    public static final String DEPARTMENT_NOT_NULL = "Department cannot be empty or null";
+    public static final String SALARY_POSITIVE = "Salary must be greater than zero";
+    public static final String SALARY_NOT_NULL = "Field cannot be null: salary";
+    public static final String ROLE_NOT_NULL = "Role cannot be null";
 
 }

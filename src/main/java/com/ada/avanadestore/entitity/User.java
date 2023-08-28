@@ -41,9 +41,10 @@ public class User implements UserDetails {
     @UpdateTimestamp
     protected Date updatedAt = new Date();
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     protected Address address;
 
+    @Column(nullable = false)
     protected Boolean isActive;
 
     public User() {
