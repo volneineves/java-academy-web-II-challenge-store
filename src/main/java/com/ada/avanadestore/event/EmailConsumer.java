@@ -1,7 +1,7 @@
 package com.ada.avanadestore.event;
 
-import com.ada.avanadestore.dto.EmailFormDTO;
-import com.ada.avanadestore.handler.CustomExceptionHandler;
+import com.ada.avanadestore.dto.SalesEmailFormDTO;
+import com.ada.avanadestore.dto.UserEmailFormDTO;
 import com.ada.avanadestore.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import static com.ada.avanadestore.constants.Messages.SUCCESSFULLY_EVENT_CAPTURE
 @Component
 public class EmailConsumer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailConsumer.class);
     private final EmailService emailService;
 
     public EmailConsumer(EmailService emailService) {
@@ -24,10 +24,21 @@ public class EmailConsumer {
 
     @Async
     @EventListener
-    public void handleSendEmailEvent(EmailFormDTO dto) {
+    public void handleSendEmailEventUser(UserEmailFormDTO dto) {
         try {
-            emailService.sendEmail(dto);
+            emailService.sendUserEmail(dto);
             LOGGER.info(SUCCESSFULLY_EVENT_CAPTURE + "handleSendEmailEvent");
+        } catch (Exception exception) {
+            LOGGER.error("{}: {}", exception.getClass().getName(), FAILURE_EVENT_CAPTURE + exception.getMessage());
+        }
+    }
+
+    @Async
+    @EventListener
+    public void handleSendEmailEventSales(SalesEmailFormDTO dto) {
+        try {
+            emailService.sendSalesManagerEmail(dto);
+            LOGGER.info(SUCCESSFULLY_EVENT_CAPTURE + "handleSendEmailEventSales");
         } catch (Exception exception) {
             LOGGER.error("{}: {}", exception.getClass().getName(), FAILURE_EVENT_CAPTURE + exception.getMessage());
         }

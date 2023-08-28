@@ -49,6 +49,12 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
+    @PatchMapping("/{id}/in-process")
+    public ResponseEntity<OrderDTO> inProcess(@PathVariable UUID id) {
+        OrderDTO inProcessOrder = service.setInProcess(id);
+        return ResponseEntity.ok(inProcessOrder);
+    }
+
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<OrderDTO> cancel(@PathVariable UUID id) {
         OrderDTO cancelledOrder = service.cancel(id);

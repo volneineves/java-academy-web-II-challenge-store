@@ -5,6 +5,7 @@ import com.ada.avanadestore.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -37,8 +38,9 @@ public class CustomerController {
         return ResponseEntity.ok(updatedCustomer);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> desative(@PathVariable("id") UUID id) {
+    public ResponseEntity<Void> deactivate(@PathVariable("id") UUID id) {
         service.deactivate(id);
         return ResponseEntity.noContent().build();
     }

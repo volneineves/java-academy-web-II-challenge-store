@@ -4,15 +4,18 @@ import com.ada.avanadestore.dto.ProductDTO;
 import com.ada.avanadestore.dto.ProductFilterDTO;
 import com.ada.avanadestore.dto.UpdateProductQuantityDTO;
 import com.ada.avanadestore.entitity.Product;
+import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.ProductFilterRepository;
 import com.ada.avanadestore.repository.ProductRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-import static com.ada.avanadestore.constants.Messages.PRODUCT_NOT_FOUND;
+import static com.ada.avanadestore.constants.Messages.*;
 
 @Service
 public class ProductService {
@@ -37,6 +40,16 @@ public class ProductService {
         Product product = getById(dto.id());
         Integer stockTotal = product.getStock() - dto.quantityDecrease();
         product.setStock(stockTotal);
-        repository.save(product);
+        trySaverOrThrowError(product);
+    }
+
+    private void trySaverOrThrowError(Product product) {
+        try {
+            repository.save(product);
+        } catch (DataIntegrityViolationException e) {
+            throw new BadRequestException(DATA_INTEGRITY_ERROR);
+        } catch (Exception e) {
+            throw new InternalServerException(INTERNAL_SERVER_ERROR);
+        }
     }
 }

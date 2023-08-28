@@ -1,4 +1,6 @@
 package com.ada.avanadestore.dto;
 
-public record TokenDTO(String type, String token) {
+import java.util.UUID;
+
+public record TokenDTO(UUID user, String userType, String type, String token) {
 }

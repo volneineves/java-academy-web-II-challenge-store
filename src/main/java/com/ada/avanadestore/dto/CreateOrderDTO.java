@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import static com.ada.avanadestore.constants.Messages.*;
 
-public record CreateOrderDTO(@NotNull(message = USER_NOT_NULL) UUID user,
-                             @NotNull(message = ORDER_ITEMS_NOT_NULL) @NotEmpty(message = ORDER_ITEMS_NOT_EMPTY) @Valid List<CreateOrderItemDTO> orderItems) {
+public record CreateOrderDTO(@NotNull(message = CUSTUMER_NOT_NULL) UUID customerId,
+                             @NotNull(message = ORDER_ITEMS_NOT_NULL)
+                             @NotEmpty(message = ORDER_ITEMS_NOT_EMPTY) @Valid List<CreateOrderItemDTO> orderItems) {
 }

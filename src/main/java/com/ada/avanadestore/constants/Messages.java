@@ -8,7 +8,7 @@ public class Messages {
     public static final String PASSWORD_MIN_LENGTH_8 = "Field password must be at least 8 characters";
     public static final String BIRTHDATE_CANNOT_BE_NULL = "Field cannot be null: birthdate";
     public static final String INVALID_CPF_FORMAT = "Invalid cpf. Correct format is xxx.xxx.xxx-xx";
-    public static final String INVALID_EMAIL_FORMAT = "Invalid email. Correct format is user@mailprovider.com";
+    public static final String INVALID_EMAIL_FORMAT = "Invalid email. Correct format is customerId@mailprovider.com";
     public static final String ADDRESS_CANNOT_BE_NULL = "Field cannot be null: address";
     public static final String STREET_CANNOT_BE_NULL = "Field cannot be null: street";
     public static final String NUMBER_CANNOT_BE_NULL = "Field cannot be null: number";
@@ -23,10 +23,11 @@ public class Messages {
     public static final String ZIP_INVALID_FORMAT = "Invalid zip format. Correct format is 00000-000";
     public static final String USER_NOT_FOUND = "User could not be found";
     public static final String CUSTOMER_NOT_FOUND = "Customer could not be found";
+    public static final String EMPLOYEE_NOT_FOUND = "Employee could not be found";
     public static final String AUTHENTICATION_INVALID = "Authentication failed. JWT could be invalid, untrustworthy or empty";
     public static final String INVALID_CREDENTIALS = "Invalid credentials: Username or password";
     public static final String PRODUCT_NOT_FOUND = "Product could not be found";
-    public static final String USER_NOT_NULL = "Field cannot be null: user";
+    public static final String CUSTUMER_NOT_NULL = "Field cannot be null: customerId";
     public static final String ORDER_ITEMS_NOT_NULL = "Field cannot be null: orderItems";
     public static final String ORDER_ITEMS_NOT_EMPTY = "Field cannot be empty: orderItems";
     public static final String PRODUCT_NOT_NULL = "Field cannot be null: product";
@@ -37,7 +38,7 @@ public class Messages {
     public static final String ORDER_NOT_FOUND = "Order could not be found";
     public static final String EXCEED_PRODUCT_STOCK = "Order exceed products quantity";
     public static final String SUCCESSFULLY_EVENT_CAPTURE = "Successfully captured event: ";
-    public static final String FAILURE_EVENT_CAPTURE = "Successfully captured event: ";
+    public static final String FAILURE_EVENT_CAPTURE = "Failure captured event: ";
     public static final String SUCCESSFULLY_EVENT_PUBLISHED = "Successfully publishing event: ";
     public static final String FAILURE_EVENT_PUBLISHED = "Failure publishing event: ";
     public static final String SUBJECT_ORDER_CREATED = "Order Created";
@@ -50,8 +51,8 @@ public class Messages {
     public static final String MESSAGE_ORDER_CANCELLED = "We're sorry to hear that you've cancelled your order. If you have any questions or concerns, please contact our customer service.";
     public static final String SUBJECT_ORDER_UNKNOWN = "Order Status Update";
     public static final String MESSAGE_ORDER_UNKNOWN = "Unknown status. Please contact customer service for more information.";
-    public static final String MESSAGE_WELCOME_NEW_CUSTOMER = "Welcome to our store! We're excited to have you join our community.";
-    public static final String SUBJECT_WELCOME_NEW_CUSTOMER = "Welcome";
+    public static final String MESSAGE_WELCOME_NEW_USER = "Welcome to our store! We're excited to have you join our community.";
+    public static final String SUBJECT_WELCOME_NEW_USER = "Welcome";
     public static final String MESSAGE_USER_DATA_UPDATED = "Your account information has been successfully updated.";
     public static final String MESSAGE_USER_DISABLED = "Your account has been disabled.";
     public static final String SUBJECT_USER_DATA_UPDATED = "Account Information Updated";

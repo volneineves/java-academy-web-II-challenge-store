@@ -1,16 +1,16 @@
 package com.ada.avanadestore.service;
 
+import com.ada.avanadestore.dto.UserEmailFormDTO;
 import com.ada.avanadestore.dto.EmployeeDTO;
-import com.ada.avanadestore.dto.EmailFormDTO;
 import com.ada.avanadestore.entitity.Address;
 import com.ada.avanadestore.entitity.Department;
 import com.ada.avanadestore.entitity.Employee;
 import com.ada.avanadestore.entitity.User;
+import com.ada.avanadestore.enums.EmployeeRoles;
 import com.ada.avanadestore.event.EmailPublisher;
 import com.ada.avanadestore.exception.BadRequestException;
 import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
-import com.ada.avanadestore.handler.CustomExceptionHandler;
 import com.ada.avanadestore.repository.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.ada.avanadestore.constants.Messages.*;
@@ -25,7 +26,7 @@ import static com.ada.avanadestore.constants.Messages.*;
 @Service
 public class EmployeeService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
     private final EmployeeRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final EmailPublisher emailPublisher;
@@ -39,11 +40,15 @@ public class EmployeeService {
     }
 
     public Employee getById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(EMPLOYEE_NOT_FOUND));
     }
 
     public EmployeeDTO findById(UUID id) {
         return getById(id).toDTO();
+    }
+
+    public List<Employee> getAllByRoleAndDepartmentName(EmployeeRoles role, String departmentName) {
+        return repository.findAllByRoleAndDepartmentName(role, departmentName);
     }
 
     public EmployeeDTO create(EmployeeDTO dto) {
@@ -92,10 +97,8 @@ public class EmployeeService {
         try {
             repository.save(employee);
         } catch (DataIntegrityViolationException e) {
-            LOGGER.error("{}: {}", e.getClass().getName(), e.getMessage());
             throw new BadRequestException(DATA_INTEGRITY_ERROR);
         } catch (Exception e) {
-            LOGGER.error("{}: {}", e.getClass().getName(), e.getMessage());
             throw new InternalServerException(INTERNAL_SERVER_ERROR);
         }
     }
@@ -106,17 +109,17 @@ public class EmployeeService {
     }
 
     private void sendEmailForCreatedUser(User user) {
-        EmailFormDTO emailFormDTO = new EmailFormDTO(user.getEmail(), SUBJECT_WELCOME_NEW_CUSTOMER, MESSAGE_WELCOME_NEW_CUSTOMER);
-        emailPublisher.handleSendEmailEvent(emailFormDTO);
+        UserEmailFormDTO userEmailFormDTO = new UserEmailFormDTO(user.getEmail(), SUBJECT_WELCOME_NEW_USER, MESSAGE_WELCOME_NEW_USER);
+        emailPublisher.handleSendEmailEventUser(userEmailFormDTO);
     }
 
     private void sendEmailForUpdatedUser(User user) {
-        EmailFormDTO emailFormDTO = new EmailFormDTO(user.getEmail(), SUBJECT_USER_DATA_UPDATED, MESSAGE_USER_DATA_UPDATED);
-        emailPublisher.handleSendEmailEvent(emailFormDTO);
+        UserEmailFormDTO userEmailFormDTO = new UserEmailFormDTO(user.getEmail(), SUBJECT_USER_DATA_UPDATED, MESSAGE_USER_DATA_UPDATED);
+        emailPublisher.handleSendEmailEventUser(userEmailFormDTO);
     }
     private void sendEmailForDisabledUser(User user) {
-        EmailFormDTO emailFormDTO = new EmailFormDTO(user.getEmail(), SUBJECT_USER_DATA_UPDATED, MESSAGE_USER_DISABLED);
-        emailPublisher.handleSendEmailEvent(emailFormDTO);
+        UserEmailFormDTO userEmailFormDTO = new UserEmailFormDTO(user.getEmail(), SUBJECT_USER_DATA_UPDATED, MESSAGE_USER_DISABLED);
+        emailPublisher.handleSendEmailEventUser(userEmailFormDTO);
     }
 
 }

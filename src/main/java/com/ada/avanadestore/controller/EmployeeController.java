@@ -43,7 +43,7 @@ public class EmployeeController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> desative(@PathVariable("id") UUID id) {
+    public ResponseEntity<Void> deactivate(@PathVariable("id") UUID id) {
         service.deactivate(id);
         return ResponseEntity.noContent().build();
     }

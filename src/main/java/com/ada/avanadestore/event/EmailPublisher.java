@@ -1,7 +1,7 @@
 package com.ada.avanadestore.event;
 
-import com.ada.avanadestore.dto.EmailFormDTO;
-import com.ada.avanadestore.handler.CustomExceptionHandler;
+import com.ada.avanadestore.dto.SalesEmailFormDTO;
+import com.ada.avanadestore.dto.UserEmailFormDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -14,7 +14,7 @@ import static com.ada.avanadestore.constants.Messages.SUCCESSFULLY_EVENT_PUBLISH
 @Component
 public class EmailPublisher {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailPublisher.class);
     private final ApplicationEventPublisher eventPublisher;
 
     public EmailPublisher(ApplicationEventPublisher eventPublisher) {
@@ -22,10 +22,19 @@ public class EmailPublisher {
     }
 
     @Async
-    public void handleSendEmailEvent(EmailFormDTO dto) {
+    public void handleSendEmailEventUser(UserEmailFormDTO dto) {
         try {
             LOGGER.info(SUCCESSFULLY_EVENT_PUBLISHED + "handleSendEmailEvent");
-            LOGGER.info("Execute method asynchronously - " + Thread.currentThread().getName());
+            eventPublisher.publishEvent(dto);
+        } catch (Exception exception) {
+            LOGGER.error("{}: {}", exception.getClass().getName(), FAILURE_EVENT_PUBLISHED + exception.getMessage());
+        }
+    }
+
+    @Async
+    public void handleSendEmailEventSales(SalesEmailFormDTO dto) {
+        try {
+            LOGGER.info(SUCCESSFULLY_EVENT_PUBLISHED + "handleSendEmailEventSales");
             eventPublisher.publishEvent(dto);
         } catch (Exception exception) {
             LOGGER.error("{}: {}", exception.getClass().getName(), FAILURE_EVENT_PUBLISHED + exception.getMessage());

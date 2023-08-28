@@ -27,8 +27,8 @@ public class OrderFilterRepository extends QuerydslRepositorySupport {
         QOrder order = QOrder.order;
         List<Predicate> predicates = new ArrayList<>();
 
-        if (filter.user() != null) {
-            predicates.add(order.user.id.eq(filter.user()));
+        if (filter.customerId() != null) {
+            predicates.add(order.customer.id.eq(filter.customerId()));
         }
         if (filter.minDate() != null) {
             predicates.add(order.orderDate.goe(filter.minDateConvertedToDate()));

@@ -1,7 +1,7 @@
 package com.ada.avanadestore.service;
 
 import com.ada.avanadestore.dto.CustomerDTO;
-import com.ada.avanadestore.dto.EmailFormDTO;
+import com.ada.avanadestore.dto.UserEmailFormDTO;
 import com.ada.avanadestore.entitity.Address;
 import com.ada.avanadestore.entitity.Customer;
 import com.ada.avanadestore.entitity.User;
@@ -94,7 +94,7 @@ public class CustomerService {
     }
 
     private void sendEmailForCreatedUser(User user) {
-        EmailFormDTO emailFormDTO = new EmailFormDTO(user.getEmail(), SUBJECT_WELCOME_NEW_CUSTOMER, MESSAGE_WELCOME_NEW_CUSTOMER);
-        emailPublisher.handleSendEmailEvent(emailFormDTO);
+        UserEmailFormDTO userEmailFormDTO = new UserEmailFormDTO(user.getEmail(), SUBJECT_WELCOME_NEW_USER, MESSAGE_WELCOME_NEW_USER);
+        emailPublisher.handleSendEmailEventUser(userEmailFormDTO);
     }
 }

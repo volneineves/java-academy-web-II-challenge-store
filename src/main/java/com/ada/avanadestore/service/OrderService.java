@@ -1,21 +1,24 @@
 package com.ada.avanadestore.service;
 
 import com.ada.avanadestore.dto.*;
-import com.ada.avanadestore.entitity.Order;
-import com.ada.avanadestore.entitity.OrderItem;
-import com.ada.avanadestore.entitity.Product;
-import com.ada.avanadestore.entitity.Customer;
+import com.ada.avanadestore.entitity.*;
+import com.ada.avanadestore.enums.EmployeeRoles;
 import com.ada.avanadestore.enums.OrderStatus;
 import com.ada.avanadestore.event.EmailPublisher;
 import com.ada.avanadestore.event.UpdateProductQuantityPublisher;
 import com.ada.avanadestore.exception.BadRequestException;
+import com.ada.avanadestore.exception.InternalServerException;
 import com.ada.avanadestore.exception.ResourceNotFoundException;
 import com.ada.avanadestore.repository.OrderFilterRepository;
 import com.ada.avanadestore.repository.OrderRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ada.avanadestore.constants.Messages.*;
 import static com.ada.avanadestore.enums.OrderStatus.IN_PROCESS;
@@ -23,20 +26,23 @@ import static com.ada.avanadestore.enums.OrderStatus.IN_PROCESS;
 @Service
 public class OrderService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
     private final OrderRepository repository;
     private final OrderFilterRepository filterRepository;
     private final ProductService productService;
     private final CustomerService customerService;
     private final UpdateProductQuantityPublisher productQuantityPublisher;
     private final EmailPublisher emailPublisher;
+    private final EmployeeService employeeService;
 
-    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, CustomerService customerService, UpdateProductQuantityPublisher productQuantityPublisher, EmailPublisher emailPublisher) {
+    public OrderService(OrderRepository repository, OrderFilterRepository filterRepository, ProductService productService, CustomerService customerService, UpdateProductQuantityPublisher productQuantityPublisher, EmailPublisher emailPublisher, EmployeeService employeeService) {
         this.repository = repository;
         this.filterRepository = filterRepository;
         this.productService = productService;
         this.customerService = customerService;
         this.productQuantityPublisher = productQuantityPublisher;
         this.emailPublisher = emailPublisher;
+        this.employeeService = employeeService;
     }
 
     private Order getById(UUID id) {
@@ -49,11 +55,11 @@ public class OrderService {
 
     public OrderDTO create(CreateOrderDTO dto) {
         List<OrderItem> orderItemList = prepareOrderItems(dto.orderItems());
-        Customer user = customerService.getById(dto.user());
+        Customer user = customerService.getById(dto.customerId());
         Order order = new Order(user, orderItemList);
         validateIfOrderItemsExceedAvailableProductsStock(order);
         order.setStatus(OrderStatus.CREATED);
-        sendEmailByOrder(order);
+        sendNotification(order);
         return repository.save(order).toDTO();
     }
 
@@ -67,46 +73,73 @@ public class OrderService {
 
         order.setOrderItems(orderItemList);
         validateIfOrderItemsExceedAvailableProductsStock(order);
-        order.setStatus(IN_PROCESS); // TODO adicionar usuario funcionario para permitir order
-        sendEmailByOrder(order);
         return repository.save(order).toDTO();
     }
 
+    public OrderDTO setInProcess(UUID id) {
+        return updateOrderStatus(id, IN_PROCESS);
+    }
+
     public OrderDTO cancel(UUID id) {
-        Order order = getById(id);
-        switch (order.getStatus()) {
-            case CANCELLED -> throw new BadRequestException(ORDER_CANCELLED);
-            case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
-            default -> {
-                order.setStatus(OrderStatus.CANCELLED);
-                sendEmailByOrder(order);
-                return repository.save(order).toDTO();
-            }
-        }
+        return updateOrderStatus(id, OrderStatus.CANCELLED);
     }
 
     public OrderDTO finalize(UUID id) {
+        Order order = validateAndGetOrderById(id);
+        validateIfOrderItemsExceedAvailableProductsStock(order);
+        return updateOrderStatus(id, OrderStatus.COMPLETED, true);
+    }
+
+    private OrderDTO updateOrderStatus(UUID id, OrderStatus newStatus) {
+        return updateOrderStatus(id, newStatus, false);
+    }
+
+    private OrderDTO updateOrderStatus(UUID id, OrderStatus newStatus, boolean shouldUpdateStock) {
+        Order order = validateAndGetOrderById(id);
+
+        if (shouldUpdateStock) {
+            updateProductStock(order.getOrderItems());
+        }
+
+        order.setStatus(newStatus);
+        trySaverOrThrowError(order);
+        sendNotification(order);
+
+        return order.toDTO();
+    }
+
+    private Order validateAndGetOrderById(UUID id) {
         Order order = getById(id);
-        switch (order.getStatus()) {
-            case CANCELLED -> throw new BadRequestException(ORDER_CANCELLED);
-            case COMPLETED -> throw new BadRequestException(ORDER_COMPLETED);
-            default -> {
-                validateIfOrderItemsExceedAvailableProductsStock(order);
-                order.setStatus(OrderStatus.COMPLETED);
-                sendEventToUpdateProductStock(order.getOrderItems());
-                sendEmailByOrder(order);
-                return repository.save(order).toDTO();
-            }
+        validateOrderStatus(order);
+        return order;
+    }
+
+    private void validateOrderStatus(Order order) {
+        if (order.getStatus() == OrderStatus.CANCELLED || order.getStatus() == OrderStatus.COMPLETED) {
+            throw new BadRequestException("Order is either cancelled or completed.");
         }
     }
 
-    private void sendEventToUpdateProductStock(List<OrderItem> orderItems) {
+    private void sendNotification(Order order) {
+        SalesEmailFormDTO emailForm = prepareEmailForm(order);
+        emailPublisher.handleSendEmailEventSales(emailForm);
+    }
 
-        for (OrderItem orderItem : orderItems) {
-            UUID productId = orderItem.getProduct().getId();
-            int quantity = orderItem.getQuantity();
-            UpdateProductQuantityDTO updateProductQuantityDTO = new UpdateProductQuantityDTO(productId, quantity);
+    private void updateProductStock(List<OrderItem> orderItems) {
+        for (OrderItem item : orderItems) {
+            UpdateProductQuantityDTO updateProductQuantityDTO =
+                    new UpdateProductQuantityDTO(item.getProduct().getId(), item.getQuantity());
             productQuantityPublisher.handleUpdateProductQuantityEvent(updateProductQuantityDTO);
+        }
+    }
+
+    private void trySaverOrThrowError(Order order) {
+        try {
+            repository.save(order);
+        } catch (DataIntegrityViolationException e) {
+            throw new BadRequestException(DATA_INTEGRITY_ERROR);
+        } catch (Exception e) {
+            throw new InternalServerException(INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -149,12 +182,8 @@ public class OrderService {
         return new ArrayList<>(orderItemMap.values());
     }
 
-    private void sendEmailByOrder(Order order) {
-        EmailFormDTO emailForm = createEmailForm(order);
-        emailPublisher.handleSendEmailEvent(emailForm);
-    }
-
-    private EmailFormDTO createEmailForm(Order order) {
+    private SalesEmailFormDTO prepareEmailForm(Order order) {
+        List<String> managerEmails = getManagerEmails();
         String emailTo = order.getCustomer().getEmail();
         String subject = SUBJECT_ORDER_UNKNOWN;
         String message = MESSAGE_ORDER_UNKNOWN;
@@ -176,6 +205,11 @@ public class OrderService {
                 subject = SUBJECT_ORDER_CANCELLED;
                 message = MESSAGE_ORDER_CANCELLED;
         }
-        return new EmailFormDTO(emailTo, subject, message);
+        return new SalesEmailFormDTO(emailTo, managerEmails, subject, message);
+    }
+
+    private List<String> getManagerEmails() {
+        List<Employee> managers = employeeService.getAllByRoleAndDepartmentName(EmployeeRoles.MANAGER, "SALES");
+        return managers.stream().flatMap(manager -> Stream.of(manager.getEmail())).toList();
     }
 }

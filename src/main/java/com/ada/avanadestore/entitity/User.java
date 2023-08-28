@@ -125,6 +125,12 @@ public class User implements UserDetails {
         return new UserDTO(id, name, email, "********", birthdate, address.toDTO(), createdAt, updatedAt);
     }
 
+    public String getUserType(){
+        if (this instanceof Employee) {
+            return "EMPLOYEE";
+        } else return "CUSTOMER";
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
