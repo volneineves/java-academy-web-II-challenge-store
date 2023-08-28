@@ -8,6 +8,30 @@
 
 Este projeto visa implementar uma API RESTful robusta e escalável para o gerenciamento de pedidos de compra. O projeto é um desafio do curso Java Academy, em um oferecimento da [Avanade](https://www.avanade.com/pt-br) e [Ada Tech](https://ada.tech/).
 
+## 🚀 Rodar o Projeto
+
+Para rodar este projeto localmente, siga os seguintes passos:
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/volneineves/java-academy-web-II-challenge-store.git
+   ```
+
+2. Navegue até o diretório do projeto:
+
+   ```bash
+   cd java-academy-web-II-challenge-store
+   ```
+
+3. Utilize o Docker Compose para subir os serviços:
+
+      ```bash
+   docker-compose up
+      ```
+
+   O projeto estará rodando na porta 8080. Acesse através do Insomnia com o arquivo presente na pasta assets`.
+
 ## ✨ Tecnologias Utilizadas
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:

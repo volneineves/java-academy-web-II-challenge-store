@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    hostname: postgres
+    environment:
+      POSTGRES_USER: avanade
+      POSTGRES_PASSWORD: avanade_password
+      POSTGRES_DB: avanade_store
+    ports:
+      - "5432:5432"
+    networks:
+      - store
+
+  api:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres:5432/avanade_store
+      DATABASE_USERNAME: avanade
+      DATABASE_PASSWORD: avanade_password
+      MAIL_USERNAME: your-mail-username
+      MAIL_PASSWORD: your-mail-password
+    ports:
+      - "8080:8080"
+    networks:
+      - store
+
+networks:
+  store:
+    driver: bridge
