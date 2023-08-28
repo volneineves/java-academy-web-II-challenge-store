@@ -3,6 +3,7 @@ spring:
     url: jdbc:h2:~/test
     driverClassName: org.h2.Driver
     username: sa
+
   h2:
     console:
       enabled: true
@@ -15,11 +16,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:data-h2.sql
+      mode: always
   mail:
     host: smtp.office365.com
     port: 587
-    username: etestando12345@hotmail.com
-    password: Ps12345678%
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
