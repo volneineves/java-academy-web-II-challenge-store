@@ -9,6 +9,7 @@ import com.ada.avanadestore.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PatchMapping("/{id}/in-process")
     public ResponseEntity<OrderDTO> inProcess(@PathVariable UUID id) {
         OrderDTO inProcessOrder = service.setInProcess(id);
